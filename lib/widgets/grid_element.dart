@@ -8,7 +8,16 @@ import 'package:provider/provider.dart';
 var rows = 6;
 var wordsize = 5;
 
-class GridElement extends StatelessWidget {
+class GridElement extends StatefulWidget {
+  @override
+  State<GridElement> createState() => _GridElementState();
+}
+
+class _GridElementState extends State<GridElement> {
+  void initState() {
+    Provider.of<GameState>(context, listen: false).updatewords();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +38,11 @@ class GridElement extends StatelessWidget {
         if (state.attempted > i) {
           attempted = true;
         }
-        // boxes.add(WordleLetterBox(
-        //   letter: word,
-        //   attempted: attempted,
-        //   correctword: state.validwords[i],
-        // ));
+        boxes.add(WordleLetterBox(
+          word,
+          // attempted: attempted,
+          // correctword: state.validwords[i],
+        ));
       }
       res.add(Row(
         mainAxisSize: MainAxisSize.min,

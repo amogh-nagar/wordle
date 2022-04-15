@@ -19,15 +19,19 @@ class _MyHomeState extends State<MyHome> {
         providers: [
           ChangeNotifierProvider.value(value: GameSettings()),
           ChangeNotifierProxyProvider<GameSettings, GameState>(
-              update: (_, settings, previous) => GameState(
-                  previous.validwords,
+              update: (_, settings, previous) => 
+                GameState(
+                  previous == null ? [] : previous.getvalidwords,
                   settings,
-                  previous.corrword,
-                  previous.attempts,
-                  previous.attempted)),
+                  previous == null ? "" : previous.getcorrword,
+                  previous == null ? [] : previous.getattempts,
+                  previous == null ? 0 : previous.getattempted
+                  )
+          ),
         ],
-        child: MaterialApp(
+        child:MaterialApp(
           home: WordleScreen(),
-        ));
+        ) ,
+        );
   }
 }

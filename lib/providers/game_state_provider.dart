@@ -10,11 +10,15 @@ class GameState extends ChangeNotifier {
   var corrword;
   final GameSettings settings;
   final List<String> attempts;
-  var attempted;
+  int attempted;
 
   GameState(this.validwords, this.settings, this.corrword, this.attempts,
       this.attempted);
 
+  List<String> get getvalidwords => validwords;
+  List<String> get getattempts => attempts;
+  String get getcorrword => corrword;
+  int get getattempted => attempted;
   Future<void> updatewords() {
     final words = loadwords(settings.wordsize);
     return words.then((value) {
@@ -33,9 +37,9 @@ class GameState extends ChangeNotifier {
 
   void updatecurrentattemp(String key) {
     var currattempt = "";
-
-    currattempt = attempts[attempted];
-
+    print("Hello $attempted");
+    print(attempts);
+    currattempt = attempts.length == 0 ? "" : attempts[attempted];
     if (key == "_") {
       if (currattempt.length < settings.wordsize) {
         return;
@@ -51,7 +55,7 @@ class GameState extends ChangeNotifier {
         return;
       }
       currattempt += key;
-      attempts[attempted] = currattempt;
+      attempts.add(currattempt);
     }
     notifyListeners();
   }

@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 
 class WordleLetterBox extends StatelessWidget {
   final String letter;
-  final String correctword;
-  final bool attempted;
-  final int pos;
-  const WordleLetterBox(
-    this.pos,
+  // final String correctword;
+  // final bool attempted;
+  // final int pos;
+   WordleLetterBox(
+    // this.pos,
     this.letter,
-    this.attempted,
-    this.correctword,
+    // this.attempted,
+    // this.correctword,
   );
 
-  Color bgcolor() {
-    if (!attempted) {
-      return null;
-    }
-    if (correctword.contains(letter)) {
-      return Colors.grey;
-    }
-    if (correctword.indexOf(letter) == pos) {
-      return Colors.yellow;
-    }
-    return Colors.orangeAccent;
-  }
+  // Color bgcolor() {
+  //   if (!attempted) {
+  //     return null;
+  //   }
+  //   if (correctword.contains(letter)) {
+  //     return Colors.grey;
+  //   }
+  //   if (correctword.indexOf(letter) == pos) {
+  //     return Colors.yellow;
+  //   }
+  //   return Colors.orangeAccent;
+  // }
 
   @override
   Widget build(BuildContext context) {

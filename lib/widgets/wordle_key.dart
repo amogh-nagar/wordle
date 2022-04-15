@@ -25,7 +25,7 @@ class WordleKey extends StatelessWidget {
     }
     return InkWell(
       onTap: () {
-        Provider.of<GameState>(context).updatecurrentattemp(letter);
+        Provider.of<GameState>(context,listen: false).updatecurrentattemp(letter);
       },
       child: Container(
         width: width,
