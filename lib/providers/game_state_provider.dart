@@ -6,12 +6,12 @@ import 'package:wordle/data/wordle_repo.dart';
 import 'package:wordle/providers/settings_provider.dart';
 
 class GameState extends ChangeNotifier {
-  final List<String> validwords;
+  List<String> validwords;
   var corrword;
   final GameSettings settings;
   final List<String> attempts;
   int attempted;
-
+  int idx = 0;
   GameState(this.validwords, this.settings, this.corrword, this.attempts,
       this.attempted);
 
@@ -19,15 +19,13 @@ class GameState extends ChangeNotifier {
   List<String> get getattempts => attempts;
   String get getcorrword => corrword;
   int get getattempted => attempted;
-  Future<void> updatewords() {
-    final words = loadwords(settings.wordsize);
-    return words.then((value) {
-      validwords.clear();
-      validwords.addAll(value);
-      corrword = validwords[Random().nextInt(validwords.length)];
+  Future<void> updatewords() async {
+    final words = await loadwords(settings.wordsize);
 
-      notifyListeners();
-    });
+    validwords = words;
+    corrword = words[(idx + 1) % validwords.length];
+    idx++;
+    notifyListeners();
   }
 
   void newCorrectWord(String word) {
@@ -36,27 +34,44 @@ class GameState extends ChangeNotifier {
   }
 
   void updatecurrentattemp(String key) {
-    var currattempt = "";
-    print("Hello $attempted");
-    print(attempts);
-    currattempt = attempts.length == 0 ? "" : attempts[attempted];
+    if (attempts.length <= attempted) {
+      attempts.add("");
+    }
+    print("attempts: $attempts");
+    var currentAttempt = attempts[attempted];
+
     if (key == "_") {
-      if (currattempt.length < settings.wordsize) {
+      // handle enter press
+
+      if (currentAttempt.length < settings.wordsize) {
+        print("attempted word incomplete");
+        return;
+      }
+      print("valid words are $validwords");
+
+      if (!validwords.contains(currentAttempt.toLowerCase())) {
+        print("curr $currentAttempt");
+        print("not in valid words list");
         return;
       }
       attempted++;
     } else if (key == "<") {
-      if (currattempt.isEmpty) {
+      // handle backpress
+      if (currentAttempt.isEmpty) {
+        print("cannot backspace on empty string");
         return;
       }
-      currattempt = currattempt.substring(0, currattempt.length - 1);
+      currentAttempt = currentAttempt.substring(0, currentAttempt.length - 1);
+      attempts[attempted] = currentAttempt;
     } else {
-      if (currattempt.length > settings.wordsize) {
+      if (currentAttempt.length >= settings.wordsize) {
+        print("trying to type word longer than correct word length");
         return;
       }
-      currattempt += key;
-      attempts.add(currattempt);
+      currentAttempt += key;
+      attempts[attempted] = currentAttempt;
     }
+
     notifyListeners();
   }
 }
