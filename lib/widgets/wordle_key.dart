@@ -25,7 +25,8 @@ class WordleKey extends StatelessWidget {
     }
     return InkWell(
       onTap: () {
-        Provider.of<GameState>(context,listen: false).updatecurrentattemp(letter);
+        Provider.of<GameState>(context, listen: false)
+            .updatecurrentattemp(letter, context);
       },
       child: Container(
         width: width,
@@ -35,7 +36,8 @@ class WordleKey extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             shape: BoxShape.rectangle,
-            color: Color.fromARGB(44, 44, 44, 44)),
+            color: Provider.of<GameState>(context).getKeyColor(letter),
+            border: Border.all(color: Colors.grey, width: 2)),
         child: keyCap,
       ),
     );

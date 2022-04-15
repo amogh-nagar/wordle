@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wordle/providers/game_state_provider.dart';
 
 class WordleLetterBox extends StatelessWidget {
   final String letter;
@@ -12,15 +14,7 @@ class WordleLetterBox extends StatelessWidget {
     this.correctword,
   );
 
-  Color getBgColor() {
-    print("correctword $correctword");
-    print("pos $letter and $pos");
-    if (!attempted) return null;
-    print("indexof ${correctword.indexOf(letter)}");
-    if (correctword[pos] == letter.toLowerCase()) return Colors.green;
-    if (correctword.contains(letter.toLowerCase())) return Colors.orangeAccent;
-    return Colors.grey;
-  }
+  
 
   BoxBorder getBorder() {
     if (!attempted) return Border.all(color: Colors.grey, width: 2);
@@ -34,6 +28,19 @@ class WordleLetterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+    Color getBgColor() {
+    print("correctword $correctword");
+    if (!attempted) return null;
+    Color x=Colors.grey;
+    if (correctword[pos] == letter.toLowerCase()) x= Colors.green;
+    else if (correctword.contains(letter.toLowerCase())) x= Colors.orangeAccent;
+    Provider.of<GameState>(context,listen: false).setmp(letter, x);
+
+    return x;
+  }
+
     return Container(
       width: 50,
       height: 50,

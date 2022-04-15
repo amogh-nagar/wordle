@@ -16,22 +16,19 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: GameSettings()),
-          ChangeNotifierProxyProvider<GameSettings, GameState>(
-              update: (_, settings, previous) => 
-                GameState(
-                  previous == null ? [] : previous.getvalidwords,
-                  settings,
-                  previous == null ? "" : previous.getcorrword,
-                  previous == null ? [] : previous.getattempts,
-                  previous == null ? 0 : previous.getattempted
-                  )
-          ),
-        ],
-        child:MaterialApp(
-          home: WordleScreen(),
-        ) ,
-        );
+      providers: [
+        ChangeNotifierProvider.value(value: GameSettings()),
+        ChangeNotifierProxyProvider<GameSettings, GameState>(
+            update: (_, settings, previous) => GameState(
+                previous == null ? [] : previous.getvalidwords,
+                settings,
+                previous == null ? "" : previous.getcorrword,
+                previous == null ? [] : previous.getattempts,
+                previous == null ? 0 : previous.getattempted)),
+      ],
+      child: MaterialApp(
+        home: WordleScreen(),
+      ),
+    );
   }
 }
