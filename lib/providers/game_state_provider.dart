@@ -46,6 +46,12 @@ class GameState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> changesize(int x) async {
+    settings.changeWordSize(x);
+    await updatewords();
+    notifyListeners();
+  }
+
   void newCorrectWord(String word) {
     corrword = validwords[Random().nextInt(validwords.length)];
     notifyListeners();

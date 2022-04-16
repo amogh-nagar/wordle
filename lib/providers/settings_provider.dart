@@ -48,13 +48,18 @@ class GameSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeWordSize(int x) {
+    wordsize = x;
+    notifyListeners();
+  }
+
   void incrementstreak() {
     currstreak++;
     notifyListeners();
   }
 
   void incrementidx(int x) {
-    idx=x;
+    idx = x;
     notifyListeners();
   }
 
