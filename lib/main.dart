@@ -20,13 +20,15 @@ class _MyHomeState extends State<MyHome> {
         ChangeNotifierProvider.value(value: GameSettings()),
         ChangeNotifierProxyProvider<GameSettings, GameState>(
             update: (_, settings, previous) => GameState(
-                previous == null ? [] : previous.getvalidwords,
-                settings,
-                previous == null ? "" : previous.getcorrword,
-                previous == null ? [] : previous.getattempts,
-                previous == null ? 0 : previous.getattempted)),
+                validwords: previous == null ? [] : previous.getvalidwords,
+                settings: settings,
+                corrword: previous == null ? "" : previous.getcorrword,
+                attempts: previous == null ? [] : previous.getattempts,
+                attempted: previous == null ? 0 : previous.getattempted)),
       ],
       child: MaterialApp(
+        theme: new ThemeData(
+            scaffoldBackgroundColor: Color.fromARGB(255, 174, 251, 238)),
         home: WordleScreen(),
       ),
     );

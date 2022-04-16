@@ -37,7 +37,8 @@ class WordleKey extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4)),
             shape: BoxShape.rectangle,
             color: Provider.of<GameState>(context).getKeyColor(letter),
-            border: Border.all(color: Colors.grey, width: 2)),
+            border: Border.all(
+                color: Color.fromARGB(255, 161, 161, 161), width: 2)),
         child: keyCap,
       ),
     );

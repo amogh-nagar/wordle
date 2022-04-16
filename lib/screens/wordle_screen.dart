@@ -12,9 +12,18 @@ import 'package:wordle/widgets/wordle_keyboard.dart';
 class WordleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Wordle',
+          style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 58, 89, 89)),
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 111, 223, 212),
+      ),
       body: Container(
         child: Column(
             mainAxisSize: MainAxisSize.max,

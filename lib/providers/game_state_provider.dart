@@ -12,13 +12,19 @@ import 'package:wordle/providers/settings_provider.dart';
 class GameState extends ChangeNotifier {
   List<String> validwords;
   var corrword;
+
   final GameSettings settings;
   final List<String> attempts;
   Map<String, Color> mp = Map();
   int attempted;
-  int idx = 0;
-  GameState(this.validwords, this.settings, this.corrword, this.attempts,
-      this.attempted);
+
+  GameState({
+    this.validwords,
+    this.settings,
+    this.corrword,
+    this.attempts,
+    this.attempted,
+  });
 
   List<String> get getvalidwords => validwords;
   List<String> get getattempts => attempts;
@@ -26,10 +32,17 @@ class GameState extends ChangeNotifier {
   int get getattempted => attempted;
   Future<void> updatewords() async {
     final words = await loadwords(settings.wordsize);
-
     validwords = words;
-    corrword = words[(idx + 1) % validwords.length];
-    idx++;
+    corrword = words[(settings.idx + 1) % validwords.length];
+    var x = Random().nextInt(validwords.length - 1);
+    settings.incrementidx(x);
+    notifyListeners();
+  }
+
+  void changecorrword() {
+    var x = Random().nextInt(validwords.length - 1);
+    settings.incrementidx(x);
+    corrword = validwords[(settings.idx + 1) % validwords.length];
     notifyListeners();
   }
 
@@ -47,7 +60,7 @@ class GameState extends ChangeNotifier {
   Color getKeyColor(String letter) {
     var x = mp != null && mp.containsKey(letter)
         ? mp[letter]
-        : Color.fromARGB(255, 199, 199, 199);
+        : Color.fromARGB(255, 227, 255, 246);
     print("color: $x");
     return x;
   }
@@ -56,12 +69,11 @@ class GameState extends ChangeNotifier {
     if (attempts.length <= attempted) {
       attempts.add("");
     }
-    print("attempts: $idx");
     var currentAttempt = attempts[attempted];
 
     if (key == "_") {
       // handle enter press
-
+      settings.updatecurattempts();
       if (currentAttempt.length < settings.wordsize) {
         print("attempted word incomplete");
         return;
@@ -73,6 +85,80 @@ class GameState extends ChangeNotifier {
         return;
       }
       if (currentAttempt.toLowerCase() == corrword) {
+        settings.resetcurrattempts();
+        settings.incrementstreak();
+        settings.updatelevel();
+        changecorrword();
+        mp.clear();
+        attempts.clear();
+        attempted = 0;
+
+        notifyListeners();
+        if (settings.level == 2 || settings.level == 3 || settings.level == 4) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                  child: Dialog(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                    ),
+                    backgroundColor: Colors.lightGreen,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Center(
+                                child: Text(
+                              "Hurray!",
+                              style: GoogleFonts.mulish(
+                                  fontSize: 32, fontWeight: FontWeight.w700),
+                            )),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Twemoji(
+                            emoji: '🤩',
+                            height: 80,
+                            width: 80,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Center(
+                                child: Text(
+                              "You have leveled up!",
+                              style: GoogleFonts.mulish(
+                                  fontSize: 15, fontWeight: FontWeight.w700),
+                            )),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Center(
+                                child: Text(
+                              "You are now on level ${settings.level}",
+                              style: GoogleFonts.mulish(
+                                  fontSize: 21, fontWeight: FontWeight.w700),
+                            )),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+          return;
+        }
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -112,6 +198,15 @@ class GameState extends ChangeNotifier {
                           width: double.infinity,
                           child: Center(
                               child: Text(
+                            "You have reached level ${settings.level.toStringAsFixed(1)}",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                          )),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
                             "Next Wordle",
                             style: GoogleFonts.mulish(
                                 fontSize: 25, fontWeight: FontWeight.w700),
@@ -126,26 +221,112 @@ class GameState extends ChangeNotifier {
                 ),
               );
             });
-        idx++;
 
-        attempts.clear();
-        attempted = 0;
-        notifyListeners();
         return;
+      } else {
+        settings.resetstreak();
       }
       attempted++;
       notifyListeners();
     } else if (key == "<") {
       // handle backpress
       if (currentAttempt.isEmpty) {
-        print("cannot backspace on empty string");
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                child: Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                  ),
+                  backgroundColor: Colors.lightGreen,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
+                            "Cannot Backspace on Empty String!",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Twemoji(
+                          emoji: '😑',
+                          height: 80,
+                          width: 80,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
         return;
       }
       currentAttempt = currentAttempt.substring(0, currentAttempt.length - 1);
       attempts[attempted] = currentAttempt;
     } else {
       if (currentAttempt.length >= settings.wordsize) {
-        print("trying to type word longer than correct word length");
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                child: Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                  ),
+                  backgroundColor: Colors.lightGreen,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
+                            "Trying to type word longer than correct word length",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Twemoji(
+                          emoji: '😑',
+                          height: 80,
+                          width: 80,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
         return;
       }
       currentAttempt += key;

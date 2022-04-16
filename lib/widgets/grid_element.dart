@@ -27,7 +27,7 @@ class _GridElementState extends State<GridElement> {
     var gameSettings = Provider.of<GameSettings>(context);
     var gameState = Provider.of<GameState>(context);
     wordsize = gameSettings.wordsize;
-    print("Word size ${gameState.attempts}");
+    print("Word size ${gameSettings.attempts}");
     final List<WordleRow> res = List.empty(growable: true);
     for (int i = 0; i < gameSettings.attempts; i++) {
       var word = "";
