@@ -104,7 +104,7 @@ class GameState extends ChangeNotifier {
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(24.0)),
                     ),
-                    backgroundColor: Colors.lightGreen,
+                    backgroundColor: Color.fromARGB(255, 157, 234, 70),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 40.0),
                       child: Column(
@@ -168,7 +168,7 @@ class GameState extends ChangeNotifier {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24.0)),
                   ),
-                  backgroundColor: Colors.lightGreen,
+                  backgroundColor: Color.fromARGB(255, 157, 234, 70),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40.0),
                     child: Column(
@@ -240,7 +240,7 @@ class GameState extends ChangeNotifier {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24.0)),
                   ),
-                  backgroundColor: Colors.lightGreen,
+                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40.0),
                     child: Column(
@@ -291,7 +291,7 @@ class GameState extends ChangeNotifier {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24.0)),
                   ),
-                  backgroundColor: Colors.lightGreen,
+                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40.0),
                     child: Column(
