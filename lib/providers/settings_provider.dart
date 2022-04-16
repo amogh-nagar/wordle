@@ -5,6 +5,18 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter/foundation.dart';
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class GameSettings extends ChangeNotifier {
   int wordsize;
   int attempts;
@@ -12,7 +24,7 @@ class GameSettings extends ChangeNotifier {
   int idx;
   int currstreak;
   int curattempts;
-  
+
   Map<String, Color> mp = Map();
   bool isexceeded = false;
   GameSettings(
@@ -27,19 +39,21 @@ class GameSettings extends ChangeNotifier {
     attempts--;
     notifyListeners();
   }
-void setmp(String letter, Color c) {
+
+  void setmp(String letter, Color c) {
     mp[letter] = c;
     print("hashmap ${mp}");
     notifyListeners();
   }
-   Color getKeyColor(String letter) {
-    var x = mp != null && mp.containsKey(letter)
-        ? mp[letter]
-        : Color.fromARGB(255, 227, 255, 246);
+
+  Color getKeyColor(String letter) {
+    var x =
+        mp != null && mp.containsKey(letter) ? mp[letter] : HexColor("#FF9E00");
 
     return x;
   }
-  void mpclear(){
+
+  void mpclear() {
     mp.clear();
     notifyListeners();
   }

@@ -10,11 +10,21 @@ import 'package:wordle/widgets/wordle_bar.dart';
 import 'package:wordle/widgets/wordle_grid.dart';
 import 'package:wordle/widgets/wordle_keyboard.dart';
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class WordleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -30,7 +40,7 @@ class WordleScreen extends StatelessWidget {
                           child: Dialog(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(24.0)),
+                                  BorderRadius.all(Radius.circular(50.0)),
                             ),
                             child: _buildDialogBody(context),
                           ),
@@ -43,12 +53,13 @@ class WordleScreen extends StatelessWidget {
         title: Text(
           'Wordle',
           style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 58, 89, 89)),
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: HexColor("#240046"),
+          ),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 111, 223, 212),
+        backgroundColor: HexColor("#FF7900"),
       ),
       body: Container(
         child: Column(
@@ -69,7 +80,10 @@ void changewordsize(int x, BuildContext context) {
 _buildDialogBody(BuildContext context) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(50),
+      color: HexColor("#FF9E00"),
+    ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -97,12 +111,14 @@ _buildDialogBody(BuildContext context) {
                 },
                 child: Text(
                   '4',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(20),
-                  primary: Colors.blue, // <-- Button color
+                  primary: HexColor("#7B2CBF"), // <-- Button color
                   onPrimary:
                       Color.fromARGB(255, 218, 211, 211), // <-- Splash color
                 ),
@@ -121,7 +137,8 @@ _buildDialogBody(BuildContext context) {
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(20),
-                  primary: Colors.blue, // <-- Button color
+
+                  primary: HexColor("#7B2CBF"), // <-- Button color
                   onPrimary:
                       Color.fromARGB(255, 218, 211, 211), // <-- Splash color
                 ),
@@ -140,7 +157,8 @@ _buildDialogBody(BuildContext context) {
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(20),
-                  primary: Colors.blue, // <-- Button color
+
+                  primary: HexColor("#7B2CBF"), // <-- Button color
                   onPrimary:
                       Color.fromARGB(255, 218, 211, 211), // <-- Splash color
                 ),

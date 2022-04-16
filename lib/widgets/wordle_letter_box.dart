@@ -23,7 +23,7 @@ class WordleLetterBox extends StatelessWidget {
   }
 
   Color getTextColor() {
-    if (!attempted) return Colors.black87;
+    // if (!attempted) return Colors.black87;
     return Colors.white;
   }
 

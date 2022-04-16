@@ -29,6 +29,9 @@ class WordleKeyboard extends StatelessWidget {
             for (var i in "_ZXCVBNM<".split("")) WordleKey(i, x.getKeyColor(i))
           ],
         ),
+        SizedBox(
+          height: 20,
+        )
       ],
     );
   }

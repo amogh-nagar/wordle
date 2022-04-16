@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordle/providers/game_state_provider.dart';
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class WordleKey extends StatelessWidget {
   final String letter;
   final Color x;
@@ -37,8 +49,7 @@ class WordleKey extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4)),
             shape: BoxShape.rectangle,
             color: x,
-            border: Border.all(
-                color: Color.fromARGB(255, 161, 161, 161), width: 2)),
+            border: Border.all(color: HexColor("#FF8500"), width: 2)),
         child: keyCap,
       ),
     );
