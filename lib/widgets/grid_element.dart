@@ -17,6 +17,7 @@ class GridElement extends StatefulWidget {
 }
 
 class _GridElementState extends State<GridElement> {
+  @override
   void initState() {
     Provider.of<GameState>(context, listen: false).updatewords();
     super.initState();

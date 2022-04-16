@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:wordle/providers/game_state_provider.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
+import 'package:wordle/providers/settings_provider.dart';
 
 class WordleLetterBox extends StatelessWidget {
   final String letter;
@@ -36,8 +37,7 @@ class WordleLetterBox extends StatelessWidget {
         x = Colors.green;
       else if (correctword.contains(letter.toLowerCase()))
         x = Colors.orangeAccent;
-      Provider.of<GameState>(context, listen: false).setmp(letter, x);
-
+      // Provider.of<GameSettings>(context, listen: false).setmp(letter, x);
       return x;
     }
 

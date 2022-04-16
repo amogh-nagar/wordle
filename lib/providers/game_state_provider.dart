@@ -15,7 +15,6 @@ class GameState extends ChangeNotifier {
 
   final GameSettings settings;
   final List<String> attempts;
-  Map<String, Color> mp = Map();
   int attempted;
 
   GameState({
@@ -48,6 +47,9 @@ class GameState extends ChangeNotifier {
 
   Future<void> changesize(int x) async {
     settings.changeWordSize(x);
+    settings.resetcurrattempts();
+    attempts.clear();
+    attempted = 0;
     await updatewords();
     notifyListeners();
   }
@@ -55,20 +57,6 @@ class GameState extends ChangeNotifier {
   void newCorrectWord(String word) {
     corrword = validwords[Random().nextInt(validwords.length)];
     notifyListeners();
-  }
-
-  void setmp(String letter, Color c) {
-    mp[letter] = c;
-    print("hashmap ${mp}");
-    notifyListeners();
-  }
-
-  Color getKeyColor(String letter) {
-    var x = mp != null && mp.containsKey(letter)
-        ? mp[letter]
-        : Color.fromARGB(255, 227, 255, 246);
-    print("color: $x");
-    return x;
   }
 
   void updatecurrentattemp(String key, BuildContext context) {
@@ -81,13 +69,101 @@ class GameState extends ChangeNotifier {
       // handle enter press
       settings.updatecurattempts();
       if (currentAttempt.length < settings.wordsize) {
-        print("attempted word incomplete");
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                child: Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                  ),
+                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
+                            "Attempted word is incomplete!",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Twemoji(
+                          emoji: '😑',
+                          height: 80,
+                          width: 80,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
         return;
       }
       print("valid words are $validwords");
 
       if (!validwords.contains(currentAttempt.toLowerCase())) {
-        print("not in valid words list");
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                child: Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                  ),
+                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
+                            "Not in words list!",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Twemoji(
+                          emoji: '😑',
+                          height: 80,
+                          width: 80,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
         return;
       }
       if (currentAttempt.toLowerCase() == corrword) {
@@ -95,7 +171,8 @@ class GameState extends ChangeNotifier {
         settings.incrementstreak();
         settings.updatelevel();
         changecorrword();
-        mp.clear();
+
+        settings.mpclear();
         attempts.clear();
         attempted = 0;
 
@@ -165,6 +242,7 @@ class GameState extends ChangeNotifier {
               });
           return;
         }
+
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -233,6 +311,57 @@ class GameState extends ChangeNotifier {
         settings.resetstreak();
       }
       attempted++;
+      if (attempted >= settings.attempts) {
+        settings.resetcurrattempts();
+        attempts.clear();
+        attempted = 0;
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                child: Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                  ),
+                  backgroundColor: Color.fromARGB(255, 247, 53, 39),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                              child: Text(
+                            "You Lost!",
+                            style: GoogleFonts.mulish(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Twemoji(
+                          emoji: '🥲',
+                          height: 80,
+                          width: 80,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+      }
       notifyListeners();
     } else if (key == "<") {
       // handle backpress
@@ -335,10 +464,20 @@ class GameState extends ChangeNotifier {
             });
         return;
       }
+
       currentAttempt += key;
       attempts[attempted] = currentAttempt;
     }
 
     notifyListeners();
+  }
+
+  Color getBgColor(String letter) {
+    Color x = Colors.grey;
+    if (corrword.toString().indexOf(letter) == letter.toLowerCase())
+      x = Colors.green;
+    else if (corrword.contains(letter.toLowerCase())) x = Colors.orangeAccent;
+
+    return x;
   }
 }

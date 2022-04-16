@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,8 @@ class GameSettings extends ChangeNotifier {
   int idx;
   int currstreak;
   int curattempts;
+  
+  Map<String, Color> mp = Map();
   bool isexceeded = false;
   GameSettings(
       {this.curattempts = 0,
@@ -22,6 +25,22 @@ class GameSettings extends ChangeNotifier {
 
   void updateattempts() {
     attempts--;
+    notifyListeners();
+  }
+void setmp(String letter, Color c) {
+    mp[letter] = c;
+    print("hashmap ${mp}");
+    notifyListeners();
+  }
+   Color getKeyColor(String letter) {
+    var x = mp != null && mp.containsKey(letter)
+        ? mp[letter]
+        : Color.fromARGB(255, 227, 255, 246);
+
+    return x;
+  }
+  void mpclear(){
+    mp.clear();
     notifyListeners();
   }
 

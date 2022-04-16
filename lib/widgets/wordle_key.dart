@@ -4,8 +4,8 @@ import 'package:wordle/providers/game_state_provider.dart';
 
 class WordleKey extends StatelessWidget {
   final String letter;
-
-  const WordleKey(this.letter);
+  final Color x;
+  const WordleKey(this.letter, this.x);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class WordleKey extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             shape: BoxShape.rectangle,
-            color: Provider.of<GameState>(context).getKeyColor(letter),
+            color: x,
             border: Border.all(
                 color: Color.fromARGB(255, 161, 161, 161), width: 2)),
         child: keyCap,
