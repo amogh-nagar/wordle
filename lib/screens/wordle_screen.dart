@@ -166,6 +166,10 @@ _buildDialogBody(BuildContext context) {
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        Text('ⒸDesigned and Made by Amoghtech')
       ],
     ),
   );
