@@ -19,6 +19,9 @@ You will be given six attempts first, The number of attempts keep on reducing wh
 <img  width="100%" alt="ss" src="https://user-images.githubusercontent.com/66239105/163688989-f3ab8de4-57c4-43d0-8f9d-32afdce3a786.png">
 <br>
 
+### Different Levels, Different Difficulty
+![combo](https://user-images.githubusercontent.com/66239105/164731132-6b3956a2-1c46-4a40-9e7f-65fce774f030.png)
+<br>
 
 ### Changing the word size
 <img  width="100%" height="20%" alt="ss" src="https://user-images.githubusercontent.com/66239105/163689104-a670e07d-8ef1-4d6a-8ad0-0e2477831c05.png">

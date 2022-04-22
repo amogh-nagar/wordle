@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:twemoji/twemoji.dart';
+import 'package:wordle/data/dialogue.dart';
 import 'package:wordle/data/wordle_repo.dart';
 import 'package:wordle/providers/settings_provider.dart';
 
@@ -69,101 +70,13 @@ class GameState extends ChangeNotifier {
       // handle enter press
       settings.updatecurattempts();
       if (currentAttempt.length < settings.wordsize) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "Attempted word is incomplete!",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '😑',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+        // incompete(context);
         return;
       }
       print("valid words are $validwords");
 
       if (!validwords.contains(currentAttempt.toLowerCase())) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "Not in words list!",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '😑',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+        // notinwordslist(context);
         return;
       }
       if (currentAttempt.toLowerCase() == corrword) {
@@ -178,134 +91,11 @@ class GameState extends ChangeNotifier {
 
         notifyListeners();
         if (settings.level == 2 || settings.level == 3 || settings.level == 4) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                  child: Dialog(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                    ),
-                    backgroundColor: Color.fromARGB(255, 157, 234, 70),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 40.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Center(
-                                child: Text(
-                              "Hurray!",
-                              style: GoogleFonts.mulish(
-                                  fontSize: 32, fontWeight: FontWeight.w700),
-                            )),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Twemoji(
-                            emoji: '🤩',
-                            height: 80,
-                            width: 80,
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Center(
-                                child: Text(
-                              "You have leveled up!",
-                              style: GoogleFonts.mulish(
-                                  fontSize: 15, fontWeight: FontWeight.w700),
-                            )),
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Center(
-                                child: Text(
-                              "You are now on level ${settings.level}",
-                              style: GoogleFonts.mulish(
-                                  fontSize: 21, fontWeight: FontWeight.w700),
-                            )),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              });
+          // levelup(context, settings);
           return;
         }
 
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 157, 234, 70),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "You Win!",
-                            style: GoogleFonts.mulish(
-                                fontSize: 32, fontWeight: FontWeight.w700),
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '🎉',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "You have reached level ${settings.level.toStringAsFixed(1)}",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                          )),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "Next Wordle",
-                            style: GoogleFonts.mulish(
-                                fontSize: 25, fontWeight: FontWeight.w700),
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
-
+        // nextlevel(context, settings);
         return;
       } else {
         settings.resetstreak();
@@ -316,152 +106,20 @@ class GameState extends ChangeNotifier {
         attempts.clear();
         attempted = 0;
 
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 247, 53, 39),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "You Lost!",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '🥲',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+        // lost(context);
       }
       notifyListeners();
     } else if (key == "<") {
       // handle backpress
       if (currentAttempt.isEmpty) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "Cannot Backspace on Empty String!",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '😑',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+        // backspace(context);
         return;
       }
       currentAttempt = currentAttempt.substring(0, currentAttempt.length - 1);
       attempts[attempted] = currentAttempt;
     } else {
       if (currentAttempt.length >= settings.wordsize) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                child: Dialog(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 253, 98, 87),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Center(
-                              child: Text(
-                            "Trying to type word longer than correct word length",
-                            style: GoogleFonts.mulish(
-                                fontSize: 15, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          )),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Twemoji(
-                          emoji: '😑',
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            });
+        // longer(context);
         return;
       }
 
